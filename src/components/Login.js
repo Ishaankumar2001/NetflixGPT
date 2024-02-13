@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import { checkValidData } from "../utils/validate";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const email = useRef(null);
+  const password = useRef(null);
+  const fullname = useRef(null);
+  const phone = useRef(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
+  };
+
+  const handleButtonClick = () => {
+    //Validate the Form Data
+    checkValidData(email.current.value, password.current.value);
+    const message = checkValidData(email.current.value, password.current.value);
+    setErrorMessage(message);
+
+    //Signin-SignUp
   };
 
   return (
@@ -23,21 +38,23 @@ const Login = () => {
 
       <div className="fixed w-full px-4 py-24 z-20 text-white">
         <div className="max-w-[450px] h-[600px] mx-auto bg-black/80 rounded-lg">
-          <div className="max-w-[320px] mx-auto py-10">
+          <div className="max-w-[320px] mx-auto py-16">
             <h1 className="text-3xl font-bold mb-7">
               {isSignInForm ? "Sign In" : "Sign Up"}
             </h1>
 
-            <form className="">
+            <form onSubmit={(e) => e.preventDefault()} className="">
               {!isSignInForm && (
                 <div>
                   <input
+                    ref={fullname}
                     type="text"
                     placeholder="Full Name"
                     autoComplete="Email"
                     className="p-3 my-2 w-full bg-gray-700 rounded"
                   />
                   <input
+                    ref={phone}
                     type="text"
                     placeholder="Phone Number"
                     autoComplete="Phone Number"
@@ -47,21 +64,27 @@ const Login = () => {
               )}
 
               <input
+                ref={email}
                 type="text"
                 placeholder="Email Address"
                 autoComplete="Email"
                 className="p-3 my-2 w-full bg-gray-700 rounded"
               />
               <input
+                ref={password}
                 type="password"
                 placeholder="Password"
                 autoComplete="Password"
                 className="p-3 my-2 w-full bg-gray-700 rounded"
               />
 
-              <button className="py-3 my-6 font-bold s bg-red-600 w-full rounded-lg">
+              <button
+                className="py-3 my-6 font-bold s bg-red-600 w-full rounded-lg"
+                onClick={handleButtonClick}
+              >
                 {isSignInForm ? "Sign In" : "Sign Up"}
               </button>
+              <p className="text-red-500 font-bold">{errorMessage}</p>
 
               <div className=" text-gray-400 ">
                 <div className="mt-10">
@@ -72,7 +95,9 @@ const Login = () => {
                         <span className="ml-2">Remember me</span>
                       </div>
 
-                      <span className="justify-between">Need Help?</span>
+                      <span className="justify-between cursor-pointer">
+                        Need Help?
+                      </span>
                     </label>
                   )}
                 </div>
@@ -88,7 +113,7 @@ const Login = () => {
                   className="m-3 underline font-bold"
                   onClick={toggleSignInForm}
                 >
-                  {isSignInForm ? "Sign Up" : "Login"}
+                  {isSignInForm ? "Sign Up" : "Sign In"}
                 </Link>
               </p>
             </form>
