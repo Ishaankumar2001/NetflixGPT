@@ -32,7 +32,6 @@ const Login = () => {
         alt="logo"
       ></img>
       <div className="bg-black/20 fixed top-0 left-0 w-full h-screen" />
-      <Header />
 
       <div className="bg-black fixed top-0 left-0 w-full object-cover" />
 
